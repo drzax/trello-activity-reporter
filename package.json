@@ -23,6 +23,7 @@
     "preact-cli": "^1.4.1"
   },
   "dependencies": {
+    "moment": "^2.18.1",
     "preact": "^8.2.1",
     "preact-compat": "^3.16.0",
     "preact-router": "^2.5.5"
