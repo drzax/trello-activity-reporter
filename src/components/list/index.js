@@ -5,35 +5,34 @@ import Card from '../card';
 
 export default class List extends Component {
 	
-	// gets called when this route is navigated to
-	async componentDidMount() {
-		
-		console.log('this.props', this.props);
+	state = {
+		cards: []
+	}
+	
+	async componentWillMount() {
 		
 		let res = await get(`/lists/${this.props.list.id}`, {
 			cards: 'open'
 		});
 		
 		let json = await res.json();
-		this.setState({ list: json || {} });
+		this.setState({ cards: json && json.cards || [] });
 	}
 
-	render({ id }, { list=null }) {
-		
-		return list ? (
-			
-			<div class={style.profile}>
+	render({ since, list }, { cards }) {
+		return (
+			<div class={style.list}>
 			
 				<h2>{list.name}</h2>
 				
 				<div class="list">
-					{ list.cards.map( card => (
-						<Card card={card} />
+					{ cards.map( card => (
+						<Card card={card} since={since} />
 					)) }
 				</div>
 				
 			</div>
-		) : '';
+		);
 	}
 }
 

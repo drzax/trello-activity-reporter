@@ -5,59 +5,42 @@ import List from '../../components/list';
 import moment from 'moment';
 
 export default class Board extends Component {
+	
 	state = {
-		time: moment(),
-		date: moment().subtract(1, 'month'),
-		count: 10
-	};
-
-	// gets called when this route is navigated to
-	async componentDidMount() {
-		// start a timer for the clock:
-		this.timer = setInterval(this.updateTime, 1000);
+		today: moment().format('YYYY-MM-DD'),
+		since: localStorage.getItem('reportBoardChangesSince') || moment().subtract(1, 'month').format('YYYY-MM-DD'),
+		board: null
+	}
+	
+	handleDateChange = (e) => {
+		let since = moment(e.target.value).format('YYYY-MM-DD');
+		localStorage.setItem('reportBoardChangesSince', since);
+		this.setState({ since });
+	}
+	
+	async componentWillMount() {
 		
 		let res = await get(`/boards/${this.props.id}`, {
 			lists: 'open'
 		});
 		
 		let json = await res.json();
-		this.setState({ board: json || {} });
+		this.setState({ board: json || null });
 	}
 
-	// gets called just before navigating away from the route
-	componentWillUnmount() {
-		clearInterval(this.timer);
-	}
-
-	// update the current time
-	updateTime = () => {
-		this.setState({ time: moment() });
-	};
-
-	increment = () => {
-		this.setState({ count: this.state.count+1 });
-	};
-	
-	
-	// Note: `user` comes from the URL, courtesy of our router
-	render({ id }, { time, count, date, board=null }) {
-		
+	render(_, { today, since, board }) {
+		// console.log('date', date);
 		return board ? (
 			
-			<div class={style.profile}>
+			<div class={style.board}>
 			
 				<h1>{board.name}</h1>
 				
-				<form class={style.form} onSubmit={this.handleSubmit}>
-					<input id="report-since" max={time.format('YYYY-MM-DD')} value={date.format('YYYY-MM-DD')} type="date" />
-					<button>Generate</button>
-				</form>
-				
-				<p>This is the user profile for a board with id { id }.</p>
+				<p class={style.since}>Show activity since: <input class={style.date} id="report-since" max={today} value={since} type="date" onChange={this.handleDateChange} /></p>
 				
 				<div class="list">
 					{ board.lists.map( list => (
-						<List list={list} />
+						<List list={list} since={since} />
 					)) }
 				</div>
 				

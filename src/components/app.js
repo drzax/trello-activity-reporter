@@ -19,12 +19,6 @@ export default class App extends Component {
 		this.currentUrl = e.url;
 	};
 	
-	// constructor(...args) {
-	// 	super(...args);
-	// 	authorize('ac39b3228640dbb060b760e17b59b4ed')
-	// 		.then(token => this.setState({ token }), err => this.setState({ err }));
-	// }
-	
 	componentDidMount() {
 		authorize('ac39b3228640dbb060b760e17b59b4ed')
 			.then(token => {

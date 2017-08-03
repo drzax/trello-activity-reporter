@@ -1,5 +1,15 @@
-.profile {
+.board {
 	padding: 56px 20px;
 	min-height: 100%;
-	width: 100%;
+	width: 100%;	
+}
+
+.since {
+	
+}
+
+.since input {
+	vertical-align: middle;
+	font-size: 1.2em;
+	margin-left: 1em;
 }

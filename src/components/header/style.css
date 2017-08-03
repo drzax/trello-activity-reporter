@@ -46,3 +46,18 @@
 .header nav a.active {
 	background: rgba(0,0,0,0.4);
 }
+
+@media print {
+	.header {
+		display: none;
+	}
+	
+	.header h1 {
+		font-size: 18px;
+		color: #ccc;
+	}
+}
+
+@page {
+	margin: 0.5cm;
+}
