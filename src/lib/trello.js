@@ -35,7 +35,7 @@ function authorize(k) {
 					return resolve(msg.data);
 				}
 
-				reject(new Error('Unexpected message from Trello'));
+				reject(new Error(`Unexpected message from Trello`));
 			}
 		};
 

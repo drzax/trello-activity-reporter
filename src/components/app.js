@@ -2,11 +2,9 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import Header from './header';
+import Login from './login';
 import Home from '../routes/home';
 import Board from '../routes/board';
-import { authorize, setKey } from '../lib/trello';
-
-setKey('ac39b3228640dbb060b760e17b59b4ed');
 
 // import Home from 'async!./home';
 // import Profile from 'async!./profile';
@@ -21,22 +19,13 @@ export default class App extends Component {
 		this.currentUrl = e.url;
 	};
 
-	handleAuth(e) {
-		e.preventDefault();
-
-		authorize().then(
-			token => {
-				this.setState({ token });
-			},
-			err => {
-				this.setState({ err });
-			}
-		);
+	handleToken(token) {
+		this.setState({ token });
 	}
 
 	constructor() {
 		super();
-		this.handleAuth = this.handleAuth.bind(this);
+		this.handleToken = this.handleToken.bind(this);
 	}
 
 	componentWillMount() {
@@ -46,13 +35,8 @@ export default class App extends Component {
 	}
 
 	render(props, state) {
-		if (!this.state.token) {
-			return (
-				<div id="app">
-					<a href="#" onClick={this.handleAuth}>{`Login with Trello`}</a>
-				</div>
-			);
-		}
+		if (!state.token) return <Login handleToken={this.handleToken} />;
+
 		return (
 			<div id="app">
 				<Header />

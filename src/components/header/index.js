@@ -4,11 +4,16 @@ import style from './style';
 
 export default class Header extends Component {
 	render() {
+		let { boardName } = this.props;
+		let board = boardName ? `: ${boardName}` : '';
+
 		return (
 			<header class={style.header}>
-				<h1>Activity Reports</h1>
+				<h1>Activity Reporter{board}</h1>
 				<nav>
-					<Link activeClassName={style.active} href="/">Home</Link>
+					<Link activeClassName={style.active} href="/">
+						Boards
+					</Link>
 				</nav>
 			</header>
 		);
