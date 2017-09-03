@@ -1,14 +1,16 @@
 {
-	"name": "torbreck-reports",
+	"name": "trello-activity-reporter",
 	"version": "1.0.0",
-	"description": "",
+	"description": "An activity report generator for Trello boards",
 	"main": "index.js",
 	"scripts": {
 		"test": "eslint src && preact test",
 		"start": "if-env NODE_ENV=production && npm run -s serve || npm run -s dev",
 		"build": "preact build",
 		"serve": "preact build && preact serve",
-		"dev": "preact watch"
+		"dev": "preact watch",
+		"deploy":
+			"preact build --no-prerender && echo 'activity-reporter.elvery.net' > build/CNAME && surge build/"
 	},
 	"keywords": [],
 	"author": "",
