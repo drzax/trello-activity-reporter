@@ -1,7 +1,6 @@
 import { h, Component } from 'preact';
 import { authorize, setKey } from '../../lib/trello';
-
-const style = require('./style.css');
+import { Dialog } from 'react-toolbox/lib/dialog';
 
 setKey('ac39b3228640dbb060b760e17b59b4ed');
 
@@ -11,7 +10,7 @@ setKey('ac39b3228640dbb060b760e17b59b4ed');
 export default class Login extends Component {
 	state = {
 		title: 'Activity Reporter',
-		intro: `Activity reporter provides an easy way to generate printable reports of activity on a Trello board since a specified date.`
+		intro: `Activity Reporter provides an easy way to generate printable reports of activity on a Trello board.`
 	};
 
 	handleAuth(e) {
@@ -22,7 +21,7 @@ export default class Login extends Component {
 				this.props.handleToken(token);
 			},
 			err => {
-				this.setState({ err });
+				this.setState({ err, intro: 'Login unsuccessful. Please try again.' });
 			}
 		);
 	}
@@ -32,26 +31,15 @@ export default class Login extends Component {
 		this.handleAuth = this.handleAuth.bind(this);
 	}
 
-	render(props, state) {
-		let error = this.state.err ? (
-			<p className={style.error}>{`Login unsuccessful. Please try again.`}</p>
-		) : (
-			''
-		);
-
+	render(props, { err, title, intro }) {
 		return (
-			<div className={style.login}>
-				<h1 className={style.title}>{state.title}</h1>
-				<div className={style.card}>
-					<p>{state.intro}</p>
-					<button
-						className={style.button}
-						href="#"
-						onClick={this.handleAuth}
-					>{`Login with Trello`}</button>
-					{error}
-				</div>
-			</div>
+			<Dialog
+				active
+				actions={[{ label: 'Login with Trello', onClick: this.handleAuth }]}
+				title={title}
+			>
+				{intro}
+			</Dialog>
 		);
 	}
 }

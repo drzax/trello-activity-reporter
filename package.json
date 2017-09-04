@@ -9,8 +9,7 @@
 		"build": "preact build",
 		"serve": "preact build && preact serve",
 		"dev": "preact watch",
-		"deploy":
-			"preact build --no-prerender && echo 'activity-reporter.elvery.net' > build/CNAME && surge build/"
+		"deploy": "preact build --no-prerender && echo 'activity-reporter.elvery.net' > build/CNAME && surge build/"
 	},
 	"keywords": [],
 	"author": "",
@@ -26,9 +25,13 @@
 	},
 	"dependencies": {
 		"moment": "^2.18.1",
+		"node-sass": "^4.5.3",
 		"preact": "^8.2.1",
 		"preact-compat": "^3.16.0",
 		"preact-router": "^2.5.5",
-		"react-markdown": "^2.5.0"
+		"react-helmet": "^5.2.0",
+		"react-markdown": "^2.5.0",
+		"react-toolbox": "^2.0.0-beta.12",
+		"sass-loader": "^6.0.6"
 	}
 }

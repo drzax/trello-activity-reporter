@@ -20,7 +20,7 @@ function authorize(k) {
 
 		let authUrl = `${authEndpoint}/${version}/authorize?response_type=token&key=${key}&return_url=${encodeURIComponent(
 			w.location.href
-		)}&callback_method=postMessage&scope=read%2Cwrite&expiration=never&name=Torbreck%20Reports`;
+		)}&callback_method=postMessage&scope=read%2Cwrite&expiration=never&name=Activity%20Reporter`;
 		let name = 'trello';
 		let config = `width=420,height=470,left=${w.screenX +
 			(w.innerWidth - 420) / 2},top=${w.screenY + (w.innerHeight - 470) / 2}`;
