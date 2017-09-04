@@ -1,7 +1,14 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
+import './app.scss';
+import { Helmet } from 'react-helmet';
+import { Layout, Panel } from 'react-toolbox/lib/layout';
+import { AppBar } from 'react-toolbox/lib/app_bar';
+import { Avatar } from 'react-toolbox/lib/avatar';
+import { Button } from 'react-toolbox/lib/button';
+import { get } from '../lib/trello';
 
-import Header from './header';
+// import Header from './header';
 import Login from './login';
 import Home from '../routes/home';
 import Board from '../routes/board';
@@ -21,30 +28,66 @@ export default class App extends Component {
 
 	handleToken(token) {
 		this.setState({ token });
+		get('/member/me')
+			.then(res => res.json())
+			.then(member =>
+				this.setState({
+					avatar: `https://trello-avatars.s3.amazonaws.com/${member.avatarHash}/170.png`
+				})
+			);
+	}
+
+	handleLogout() {
+		this.setState({
+			token: null
+		});
+		localStorage.removeItem('trelloToken');
 	}
 
 	constructor() {
 		super();
 		this.handleToken = this.handleToken.bind(this);
+		this.handleLogout = this.handleLogout.bind(this);
 	}
 
 	componentWillMount() {
-		this.setState({
-			token: window.localStorage.trelloToken
-		});
+		this.handleToken(window.localStorage.trelloToken);
 	}
 
-	render(props, state) {
-		if (!state.token) return <Login handleToken={this.handleToken} />;
+	render(props, { token, avatar }) {
+		if (!token) return <Login handleToken={this.handleToken} />;
 
 		return (
-			<div id="app">
-				<Header />
-				<Router onChange={this.handleRoute}>
-					<Home path="/" />
-					<Board path="/board/:id" />
-				</Router>
-			</div>
+			<Layout>
+				<Helmet
+					link={[
+						{
+							href:
+								'https://fonts.googleapis.com/css?family=Roboto:400,400i,700,700i',
+							rel: 'stylesheet'
+						},
+						{
+							href: 'https://fonts.googleapis.com/icon?family=Material+Icons',
+							rel: 'stylesheet'
+						}
+					]}
+				/>
+				<Panel>
+					<AppBar title={'Activity Reporter'} fixed>
+						<Button
+							icon="exit_to_app"
+							inverse
+							label="Logout"
+							onMouseUp={this.handleLogout}
+						/>
+						<Avatar icon="face" image={avatar} />
+					</AppBar>
+					<Router onChange={this.handleRoute}>
+						<Home path="/" />
+						<Board path="/board/:id" />
+					</Router>
+				</Panel>
+			</Layout>
 		);
 	}
 }
