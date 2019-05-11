@@ -14,8 +14,8 @@ function authorize(k) {
 	if (k) setKey(k);
 
 	return new Promise((resolve, reject) => {
-		if (window.localStorage.trelloToken) {
-			return resolve(window.localStorage.trelloToken);
+		if (w.localStorage.trelloToken) {
+			return resolve(w.localStorage.trelloToken);
 		}
 
 		let authUrl = `${authEndpoint}/${version}/authorize?response_type=token&key=${key}&return_url=${encodeURIComponent(
