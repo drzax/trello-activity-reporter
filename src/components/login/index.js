@@ -1,6 +1,7 @@
 import { h, Component } from 'preact';
 import { authorize, setKey } from '../../lib/trello';
 import { Dialog } from 'react-toolbox/lib/dialog';
+import { ProgressBar } from 'react-toolbox/lib/progress_bar';
 
 setKey('ac39b3228640dbb060b760e17b59b4ed');
 
@@ -15,7 +16,6 @@ export default class Login extends Component {
 
 	handleAuth(e) {
 		e.preventDefault();
-
 		authorize().then(
 			token => {
 				this.props.handleToken(token);
@@ -31,14 +31,20 @@ export default class Login extends Component {
 		this.handleAuth = this.handleAuth.bind(this);
 	}
 
-	render(props, { err, title, intro }) {
+	render({ authorising }, { err, title, intro }) {
 		return (
 			<Dialog
 				active
-				actions={[{ label: 'Login with Trello', onClick: this.handleAuth }]}
-				title={title}
+				actions={
+					authorising ? (
+						[]
+					) : (
+						[{ label: 'Login with Trello', onClick: this.handleAuth }]
+					)
+				}
+				title={authorising ? 'Authorising' : title}
 			>
-				{intro}
+				{authorising ? <ProgressBar type="circular" /> : intro}
 			</Dialog>
 		);
 	}

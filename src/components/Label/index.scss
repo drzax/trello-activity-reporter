@@ -1,0 +1,17 @@
+.label {
+	background-color: color;
+	color: #fff;
+	text-shadow: 0px 0px 1px #000;
+	border-radius: calc(2px + 0.8rem / 2);
+	padding: 2px 8px;
+	font-size: 0.7rem;
+	line-height: 0.8em;
+	text-transform: uppercase;
+	-webkit-print-color-adjust: exact !important;
+	print-color-adjust: exact !important;
+	color-adjust: exact !important;
+}
+
+.label + .label {
+	margin-left: 0.4rem;
+}

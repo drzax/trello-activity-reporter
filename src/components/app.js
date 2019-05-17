@@ -1,11 +1,12 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
-import './app.scss';
+import styles from './app.scss';
 import { Helmet } from 'react-helmet';
 import { Layout, Panel } from 'react-toolbox/lib/layout';
 import { AppBar } from 'react-toolbox/lib/app_bar';
 import { Avatar } from 'react-toolbox/lib/avatar';
 import { Button } from 'react-toolbox/lib/button';
+import { IconMenu, MenuItem } from 'react-toolbox/lib/menu';
 import { get } from '../lib/trello';
 
 // import Header from './header';
@@ -17,6 +18,9 @@ import Board from '../routes/board';
 // import Profile from 'async!./profile';
 
 export default class App extends Component {
+	state = {
+		authorising: true
+	};
 
 	/** Gets fired when the route changes.
 	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
@@ -27,19 +31,25 @@ export default class App extends Component {
 	};
 
 	handleToken(token) {
-		this.setState({ token });
 		get('/member/me')
 			.then(res => res.json())
 			.then(member =>
 				this.setState({
-					avatar: `https://trello-avatars.s3.amazonaws.com/${member.avatarHash}/170.png`
+					avatar: `https://trello-avatars.s3.amazonaws.com/${
+						member.avatarHash
+					}/170.png`,
+					token
 				})
-			);
+			)
+			.catch(err => {
+				this.handleLogout();
+			});
 	}
 
 	handleLogout() {
 		this.setState({
-			token: null
+			token: null,
+			authorising: false
 		});
 		localStorage.removeItem('trelloToken');
 	}
@@ -54,9 +64,7 @@ export default class App extends Component {
 		this.handleToken(window.localStorage.trelloToken);
 	}
 
-	render(props, { token, avatar }) {
-		if (!token) return <Login handleToken={this.handleToken} />;
-
+	render(props, { token, avatar, authorising }) {
 		return (
 			<Layout>
 				<Helmet
@@ -73,19 +81,33 @@ export default class App extends Component {
 					]}
 				/>
 				<Panel>
-					<AppBar title={'Activity Reporter'} fixed>
-						<Button
-							icon="exit_to_app"
-							inverse
-							label="Logout"
-							onMouseUp={this.handleLogout}
-						/>
-						<Avatar icon="face" image={avatar} />
+					<AppBar class={styles.appBar} title={'Activity Reporter'} fixed>
+						<Router onChange={this.handleRoute}>
+							{token ? (
+								<Button path="/board/:id" raised label="Boards" href="/" />
+							) : (
+								<Button />
+							)}
+						</Router>
+
+						{token ? (
+							<Button
+								icon="exit_to_app"
+								inverse
+								label="Logout"
+								onMouseUp={this.handleLogout}
+							/>
+						) : null}
+						{token ? <Avatar image={avatar} /> : null}
 					</AppBar>
-					<Router onChange={this.handleRoute}>
-						<Home path="/" />
-						<Board path="/board/:id" />
-					</Router>
+					{!token ? (
+						<Login authorising={authorising} handleToken={this.handleToken} />
+					) : (
+						<Router onChange={this.handleRoute}>
+							<Home path="/" />
+							<Board path="/board/:id" />
+						</Router>
+					)}
 				</Panel>
 			</Layout>
 		);

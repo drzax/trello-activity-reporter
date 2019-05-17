@@ -11,10 +11,7 @@ export default class Home extends Component {
 			organization_fields: 'all'
 		})
 			.then(res => res.json())
-			.then(boards => {
-				console.log('boards', boards);
-				return boards;
-			})
+			.then(boards => boards)
 			.then(boards => this.setState({ boards }));
 	}
 
@@ -23,12 +20,13 @@ export default class Home extends Component {
 			<List selectable ripple>
 				{boards.map(board => (
 					<ListItem
+						className={style.listItem}
 						id={board.id}
 						caption={board.name}
 						legend={
 							board.organization ? board.organization.displayName : 'Private'
 						}
-						onClick={loadBoard}
+						to={`/board/${board.id}`}
 					/>
 				))}
 			</List>
