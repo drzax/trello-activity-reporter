@@ -1,0 +1,43 @@
+:global {
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Roboto", sans-serif;
+  }
+
+  p {
+    font-size: 1rem;
+    line-height: 1.4rem;
+  }
+
+  .overline {
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: #333;
+    margin-bottom: 0;
+
+    & + * {
+      margin-top: 0;
+    }
+  }
+
+  @page {
+    size: A4 portrait;
+  }
+}
+
+.title {
+  flex-grow: 1;
+}
+
+.appBar {
+  @media print {
+    display: none;
+  }
+}
+
+.logoutButton {
+  color: #fff;
+}
