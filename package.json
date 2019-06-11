@@ -4,12 +4,11 @@
   "description": "An activity report generator for Trello boards",
   "main": "index.js",
   "scripts": {
-    "test": "eslint src && preact test",
+    "test": "jest",
     "start": "webpack-dev-server --mode development",
-    "build": "preact build",
-    "serve": "preact build && preact serve",
+    "build": "webpack",
     "dev": "preact watch",
-    "deploy": "preact build --no-prerender && echo 'activity-reporter.elvery.net' > build/CNAME && surge build/"
+    "deploy": "webpack && echo 'activity-reporter.elvery.net' > build/CNAME && surge build/"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +31,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
     "eslint-plugin-react-hooks": "^1.5.0",
+    "jest": "^24.8.0",
     "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
     "style-loader": "^0.23.1",
