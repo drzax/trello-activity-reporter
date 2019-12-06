@@ -1,7 +1,8 @@
 .board {
-  padding: 56px 20px;
+  padding: 20px;
   min-height: 100%;
   width: 100%;
+  box-sizing: border-box;
 
   header {
     strong {
@@ -23,29 +24,36 @@
   margin-left: 1em;
 }
 
+.sectionHeading {
+  margin-top: 3rem;
+}
+
 .cardsWithActions {
   grid-template-columns: 1fr 350px;
+  grid-template-rows: auto 1fr;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 1.5rem;
+  padding-top: 2px;
+  padding-bottom: 1.5rem;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  // &::after {
+  //   content: "";
+  //   position: absolute;
+  //   display: block;
+  //   left: 0%;
+  //   right: 0%;
+  //   bottom: -1rem;
+  //   height: 1px;
+  //   border-top: 1px solid #ddd;
+  // }
 
   @media print {
     grid-template-columns: 1fr 7cm;
-  }
-}
-
-.actionsList li {
-  position: relative;
-  box-sizing: border-box;
-}
-.actionsList li:before {
-  content: "";
-  position: absolute;
-  left: -0.78rem;
-  border-left: 3px solid #000;
-  width: 1px;
-  height: 100%;
-  top: 0.59rem;
-  bottom: -0.59rem;
-
-  &:last-child {
-    display: none;
   }
 }

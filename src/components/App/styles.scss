@@ -26,6 +26,13 @@
   @page {
     size: A4 portrait;
   }
+
+  @media print {
+    html,
+    body {
+      font-size: 9pt;
+    }
+  }
 }
 
 .title {

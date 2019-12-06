@@ -1,9 +1,10 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { GenerateSW } = require("workbox-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.js",
-  mode: "development",
   module: {
     rules: [
       {
@@ -36,18 +37,23 @@ module.exports = {
   },
   resolve: { extensions: ["*", ".js", ".jsx"] },
   output: {
-    path: path.resolve(__dirname, "dist/"),
-    publicPath: "/dist/",
+    path: path.resolve(__dirname, "build/"),
+    publicPath: "/",
     filename: "bundle.js"
   },
   devServer: {
-    contentBase: path.join(__dirname, "public/"),
+    // contentBase: path.join(__dirname, "public/"),
     port: 3000,
-    publicPath: "http://localhost:3000/dist/",
+    https: true,
+    publicPath: "https://localhost:3000/",
     hotOnly: true,
     historyApiFallback: {
       index: "index.html"
     }
   },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+    new HtmlWebpackPlugin({ title: "Activity Reporter" }),
+    new GenerateSW({ swDest: "sw.js" })
+  ]
 };
